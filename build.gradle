@@ -23,8 +23,25 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'org.postgresql:postgresql'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.postgresql:postgresql'
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
 	compileOnly 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot
+    //compile group: 'org.activiti', name: 'activiti-spring-boot', version: '6.0.0', ext: 'pom'
+    // https://mvnrepository.com/artifact/org.activiti/activiti-spring-boot-starter
+    compile group: 'org.activiti', name: 'activiti-spring-boot-starter', version: '7.0.0.Beta5'
+
+
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompile("com.h2database:h2")
+
+    /*
+    * <groupId>org.activiti</groupId>
+	<artifactId>activiti-spring-boot-starter-basic</artifactId>
+	<version>${activiti.version}</version>
+    * */
 }

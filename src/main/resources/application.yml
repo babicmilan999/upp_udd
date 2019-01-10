@@ -1,0 +1,11 @@
+spring:
+  jackson.date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    url: jdbc:postgresql://localhost:5445/upp_udd
+    username: upp_udd_user
+    password: upp_udd_password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties.hibernate:
+      temp.use_jdbc_metadata_defaults: false  # explanation in README file and on confluence as well
+      jdbc.lob.non_contextual_creation: true
