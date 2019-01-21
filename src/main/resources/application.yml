@@ -9,3 +9,6 @@ spring:
     properties.hibernate:
       temp.use_jdbc_metadata_defaults: false  # explanation in README file and on confluence as well
       jdbc.lob.non_contextual_creation: true
+
+activiti-cloud-modeling:
+  enabled: true
