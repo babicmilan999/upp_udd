@@ -12,3 +12,10 @@ spring:
 
 activiti-cloud-modeling:
   enabled: true
+
+elasticsearch:
+  clustername: elasticsearch_babic
+  host: localhost
+  port: 9300
+
+upload.directory: /Users/babic/git/upp_udd/articles/
