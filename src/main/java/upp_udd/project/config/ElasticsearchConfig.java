@@ -1,6 +1,7 @@
 package upp_udd.project.config;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -17,7 +18,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 //@EnableElasticsearchRepositories(basePackages = "stevan.eBookRepository.eBookRepository.repository.elasticsearch")
-public class ElasticSearchConfig {
+public class ElasticsearchConfig {
 
     @Value("${elasticsearch.clustername}")
     private String clusterName;

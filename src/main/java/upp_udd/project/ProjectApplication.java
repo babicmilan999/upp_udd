@@ -15,7 +15,7 @@ public class ProjectApplication {
 		SpringApplication.run(ProjectApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner init(final RepositoryService repositoryService,
 	                              final RuntimeService runtimeService,
 	                              final TaskService taskService) {
@@ -31,7 +31,7 @@ public class ProjectApplication {
 			}
 		};
 
-	}
+	}*/
 
 
 }
