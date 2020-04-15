@@ -20,20 +20,25 @@ public class Article {
     @Id
     private String id;
 
-    private String name;
+    @Field(type = FieldType.Text, analyzer = "serbian_analyzer")
+    private String magazineName;
 
+    @Field(type = FieldType.Text, analyzer = "serbian_analyzer")
     private String title;
 
+    @Field(type = FieldType.Text, analyzer = "serbian_analyzer")
     private String authorName;
 
+    @Field(type = FieldType.Text, analyzer = "serbian_analyzer")
     private String authorSurname;
 
+    @Field(type = FieldType.Text, analyzer = "serbian_analyzer")
     private String keyWords;
 
     @Field(type = FieldType.Text, analyzer = "serbian_analyzer")
     private String content;
 
-    private String scientificField;
+    private String scientificFields;
 
     private String filePath;
 

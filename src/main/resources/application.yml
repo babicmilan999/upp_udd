@@ -18,5 +18,7 @@ elasticsearch:
   host: localhost
   port: 9300
 
-upload.directory: /Users/babic/git/upp_udd/articles/
 
+upload.directory: /Users/babic/git/upp_udd/articles/
+server:
+  port: 8081
