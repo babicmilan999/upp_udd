@@ -22,3 +22,5 @@ elasticsearch:
 upload.directory: /Users/babic/git/upp_udd/articles/
 server:
   port: 8081
+
+spring.jpa.hibernate.ddl-auto: create
