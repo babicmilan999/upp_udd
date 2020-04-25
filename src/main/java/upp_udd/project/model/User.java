@@ -55,8 +55,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    @Builder.Default
-    private Boolean isReviewer = false;
+    private Role role;
 
     @Column(nullable = false)
     private String hash;
@@ -70,5 +69,11 @@ public class User {
                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "scientific_field_id", referencedColumnName = "id"))
     private Set<ScientificField> scientificFields = new HashSet<>();
+
+    public enum Role {
+        AUTHOR,
+        REVIEWER,
+        ADMIN
+    }
 
 }

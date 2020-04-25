@@ -1,11 +1,11 @@
 package upp_udd.project.services;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
@@ -26,20 +26,21 @@ public class RegistrationService {
     private final TaskService taskService;
     private final UserRepository userRepository;
     private final ScientificFieldRepository scientificFieldRepository;
+    private final RuntimeService runtimeService;
 
     public boolean validate(String firstName,
-                             String lastName,
-                             String city,
-                             String country,
-                             String title,
-                             String scientificFields,
-                             String username,
-                             String password,
-                             String email,
-                             Boolean isReviewer) {
-        boolean b = new Random().nextBoolean();
-        log.info("Is valid: {}", b);
-        return b;
+                            String lastName,
+                            String city,
+                            String country,
+                            String title,
+                            String email,
+                            String username,
+                            String password,
+                            Boolean isReviewer,
+                            String scientificFields) {
+        //TODO implement validation
+        log.info("Is valid: {}", true);
+        return true;
     }
 
     @Transactional
@@ -48,11 +49,11 @@ public class RegistrationService {
                                       String city,
                                       String country,
                                       String title,
-                                      String scientificFields,
+                                      String email,
                                       String username,
                                       String password,
-                                      String email,
-                                      Boolean isReviewer) {
+                                      Boolean isReviewer,
+                                      String scientificFields) {
         final String hash = generateHash();
         log.info("Send confirmation email and persist with hash: {}", hash);
         userRepository.save(User.builder()
@@ -64,7 +65,7 @@ public class RegistrationService {
                                 .username(username)
                                 .password(password)
                                 .email(email)
-                                .isReviewer(isReviewer)
+                                .role(User.Role.AUTHOR)
                                 .hash(hash)
                                 .scientificFields(extractScientificFields(scientificFields))
                                 .build());
@@ -88,6 +89,18 @@ public class RegistrationService {
             final Task task = taskService.createTaskQuery().taskAssignee(user.getUsername()).list().iterator().next();
             taskService.complete(task.getId());
         });
+    }
+
+    @Transactional
+    public void confirmReviwer(String taskId, String adminUsername, Boolean approved, String username) {
+        taskService.claim(taskId, adminUsername);
+        if (approved) {
+            User user = userRepository.findByUsername(username);
+            user.setRole(User.Role.REVIEWER);
+            userRepository.save(user);
+        }
+
+        taskService.complete(taskId);
     }
 
     private Set<ScientificField> extractScientificFields(String scientificFields) {

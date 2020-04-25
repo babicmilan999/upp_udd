@@ -38,7 +38,7 @@ public class RegistrationController {
         map.put("scientificFields", userDto.getScientificFields());
         map.put("isReviewer", userDto.getIsReviewer());
 
-        return runtimeService.startProcessInstanceByKey("process", map).getProcessInstanceId();
+        return runtimeService.startProcessInstanceByKey("registration", map).getProcessInstanceId();
     }
 
     @PostMapping("/confirmRegistration/{hash}")
