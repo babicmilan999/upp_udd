@@ -46,31 +46,4 @@ public class RegistrationController {
         registrationService.confirmUser(hash);
     }
 
-    /*@PostMapping("/userSubmit/processInstanceId/{processInstanceId}/{odobren}")
-    public void userSubmit(@PathVariable("processInstanceId") String processInstanceId, @PathVariable("odobren") Boolean odobren) {
-        List<Task> usertasks = taskService.createTaskQuery()
-                                          .processInstanceId(processInstanceId)
-                                          .list();
-
-        usertasks.forEach(task -> {
-            Map<String, Object> taskVariables = new HashMap<>();
-            taskVariables.put("odobren", odobren);
-            taskService.complete(task.getId(), taskVariables);
-        });
-    }
-
-    @GetMapping("/get-tasks/{processInstanceId}")
-    public List<TaskRepresentation> getTasks(
-            @PathVariable String processInstanceId) {
-
-        List<Task> usertasks = taskService.createTaskQuery()
-                                          .processInstanceId(processInstanceId)
-                                          .list();
-
-        return usertasks.stream()
-                        .map(task -> new TaskRepresentation(
-                                task.getId(), task.getName(), task.getProcessInstanceId()))
-                        .collect(Collectors.toList());
-    }*/
-
 }
