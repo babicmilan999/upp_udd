@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import upp_udd.project.dto.TaskDto;
+import upp_udd.project.common.TaskId;
+import upp_udd.project.dto.MagazineApprovalDto;
+import upp_udd.project.dto.ReviewerApprovalDto;
+import upp_udd.project.services.MagazineService;
 import upp_udd.project.services.RegistrationService;
 
 @RestController
@@ -27,25 +30,59 @@ public class AdminController {
     private final TaskService taskService;
     private final RuntimeService runtimeService;
     private final RegistrationService registrationService;
+    private final MagazineService magazineService;
 
-    @GetMapping("/getAllUnclaimedTasks")
-    public List<TaskDto> getAllUnclaimedTasks() {
-        return map(taskService.createTaskQuery().taskCandidateGroup("administrators").list());
+    @GetMapping("/reviewerApproval")
+    public List<ReviewerApprovalDto> getAllReviewerApproval() {
+        return mapToReveiwerApproval(taskService.createTaskQuery()
+                                                .taskCandidateGroup("administrators")
+                                                .list()
+                                                .stream()
+                                                .filter(task -> task.getTaskDefinitionKey().equals(TaskId.REVIEWER_APPROVAL.getTaskId()))
+                                                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/magazineApproval")
+    public List<MagazineApprovalDto> getAllMagazineApprovals() {
+        return mapToMagazineApproval(taskService.createTaskQuery()
+                                                .taskCandidateGroup("administrators")
+                                                .list()
+                                                .stream()
+                                                .filter(task -> task.getTaskDefinitionKey().equals(TaskId.MAGAZINE_APPROVAL.getTaskId()))
+                                                .collect(Collectors.toList()));
     }
 
     @PostMapping("/claimAndComplete/taskId/{taskId}/user/{username}/approved/{approved}")
     public void claimAndComplete(@PathVariable("taskId") String taskId, @PathVariable("approved") Boolean approved, @PathVariable("username") String username) {
         final String adminUsername = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         log.info("User: {} claiming and completing task: {}", adminUsername, taskId);
-        registrationService.confirmReviwer(taskId, adminUsername, approved, username);
+        registrationService.confirmReviewer(taskId, adminUsername, approved, username);
     }
 
-    private List<TaskDto> map(List<Task> tasks) {
+    @PostMapping("completeReviewerApproval/taskId/{taskId}/approved/{approved}")
+    public void claimAndCompleteMagazineApproval(@PathVariable("taskId") String taskId, @PathVariable("approved") Boolean approved) {
+        final String adminUsername = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        log.info("User: {} claiming and completing task: {}", adminUsername, taskId);
+        magazineService.approveMagazine(adminUsername, approved, taskId);
+    }
+
+    private List<MagazineApprovalDto> mapToMagazineApproval(List<Task> tasks) {
         return tasks.stream()
-                    .map(task -> TaskDto.builder()
-                                        .id(task.getId())
-                                        .username(runtimeService.getVariable(task.getProcessInstanceId(), "username").toString())
-                                        .build())
+                    .map(task -> MagazineApprovalDto.builder()
+                                                    .taskId(task.getId())
+                                                    .magazineId((Long) runtimeService.getVariable(task.getProcessInstanceId(), "magazineId"))
+                                                    .taskName(task.getName())
+                                                    .build())
+                    .collect(Collectors.toList());
+    }
+
+    private List<ReviewerApprovalDto> mapToReveiwerApproval(List<Task> tasks) {
+        return tasks.stream()
+                    .map(task -> ReviewerApprovalDto.builder()
+                                                    .id(task.getId())
+                                                    .username(runtimeService.getVariable(task.getProcessInstanceId(), "username").toString())
+                                                    .taskName(task.getName())
+                                                    .build())
                     .collect(Collectors.toList());
     }
 

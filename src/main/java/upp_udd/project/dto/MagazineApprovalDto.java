@@ -6,12 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class TaskDto {
+@NoArgsConstructor
+@Builder
+public class MagazineApprovalDto {
 
-    private String id;
-    private String username;
+    private String taskId;
+    private Long magazineId;
+    private String taskName;
 
 }

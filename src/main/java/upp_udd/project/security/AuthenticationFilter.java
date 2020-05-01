@@ -47,6 +47,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                           .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
                           .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                           .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+        res.addHeader("access-control-expose-headers", "Authorization");
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
     }
 

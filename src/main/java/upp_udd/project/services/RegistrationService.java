@@ -92,7 +92,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void confirmReviwer(String taskId, String adminUsername, Boolean approved, String username) {
+    public void confirmReviewer(String taskId, String adminUsername, Boolean approved, String username) {
         taskService.claim(taskId, adminUsername);
         if (approved) {
             User user = userRepository.findByUsername(username);

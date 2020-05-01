@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import upp_udd.project.dto.UserDto;
+import upp_udd.project.dto.UserRegistrationDto;
 import upp_udd.project.services.RegistrationService;
 
 @RestController
@@ -25,18 +25,18 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/register")
-    public String startInstance(@RequestBody UserDto userDto) {
+    public String startInstance(@RequestBody UserRegistrationDto userRegistrationDto) {
         Map<String, Object> map = new HashMap<>();
-        map.put("firstName", userDto.getFirstName());
-        map.put("lastName", userDto.getLastName());
-        map.put("city", userDto.getCity());
-        map.put("country", userDto.getCountry());
-        map.put("title", userDto.getTitle());
-        map.put("email", userDto.getEmail());
-        map.put("username", userDto.getUsername());
-        map.put("password", userDto.getPassword());
-        map.put("scientificFields", userDto.getScientificFields());
-        map.put("isReviewer", userDto.getIsReviewer());
+        map.put("firstName", userRegistrationDto.getFirstName());
+        map.put("lastName", userRegistrationDto.getLastName());
+        map.put("city", userRegistrationDto.getCity());
+        map.put("country", userRegistrationDto.getCountry());
+        map.put("title", userRegistrationDto.getTitle());
+        map.put("email", userRegistrationDto.getEmail());
+        map.put("username", userRegistrationDto.getUsername());
+        map.put("password", userRegistrationDto.getPassword());
+        map.put("scientificFields", userRegistrationDto.getScientificFields());
+        map.put("isReviewer", userRegistrationDto.getIsReviewer());
 
         return runtimeService.startProcessInstanceByKey("registration", map).getProcessInstanceId();
     }
